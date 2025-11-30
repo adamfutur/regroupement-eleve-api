@@ -5,7 +5,7 @@ import random
 def init_data(db: Session):
     """Insère des élèves de test s'il n'y en a pas déjà."""
     if db.query(Eleve).count() > 0:
-        print("✅ Données déjà présentes, aucune insertion.")
+        print("[INFO] Données déjà présentes, aucune insertion.")
         return
 
     noms = [
@@ -23,4 +23,4 @@ def init_data(db: Session):
         db.add(eleve)
 
     db.commit()
-    print(f"✅ {len(noms)} élèves ajoutés avec succès !")
+    print(f"[SUCCESS] {len(noms)} eleves ajoutés avec succès !")
