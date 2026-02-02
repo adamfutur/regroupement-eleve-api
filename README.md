@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # regroupement-eleve-api
 =======
 # Student Grouping Microservice
@@ -156,4 +156,3 @@ This is a single-service microservice architecture that:
 - Supports environment-based configuration
 - Is containerized for easy deployment
 - Provides comprehensive API documentation
->>>>>>> master
