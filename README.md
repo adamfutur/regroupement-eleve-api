@@ -1,158 +1,117 @@
 
-# regroupement-eleve-api
-=======
-# Student Grouping Microservice
+# 🎓 Student Grouping Microservice
+> **regroupement-eleve-api** — A smart geographic clustering engine for student logistics.
 
-This is a microservice for grouping students based on geographic location. It provides an API for managing student groups, calculating optimal pickup points, and adjusting group configuration.
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 
-## Features
+---
 
-- Group students based on geographic location
-- Calculate optimal pickup points using K-Means clustering
-- RESTful API for group management
-- Health and readiness checks
-- Environment-based configuration
-- Docker containerization
+## 📝 Description
+This microservice automates the grouping of students based on their geographic location. By leveraging **K-Means clustering**, it calculates the most efficient pickup points to minimize travel distance and optimize transport logistics.
 
-## API Endpoints
+## ✨ Key Features
+- 📍 **Smart Clustering:** Group students based on real-world coordinates.
+- 🤖 **ML-Powered:** Optimal pickup point calculation using Scikit-Learn.
+- ⚡ **High Performance:** Built with FastAPI for asynchronous efficiency.
+- 🐳 **Cloud Ready:** Fully containerized with Docker & Docker Compose.
+- 🛠️ **Configurable:** Fine-tune group sizes and environment variables on the fly.
+- 📖 **Self-Documenting:** Interactive API docs via Swagger and ReDoc.
 
-- `GET /` - Service root and documentation
-- `GET /health` - Health check
-- `GET /ready` - Readiness check
-- `POST /groups/generate` - Generate new groups
-- `GET /groups` - List all groups
-- `GET /groups/{id}` - Get specific group
-- `PUT /groups/{id}` - Update group
-- `DELETE /groups/{id}` - Delete group
-- `GET /config` - Get configuration
-- `PUT /config` - Update configuration
-- `GET /groups/pickup-points` - Get optimal pickup points
-- `GET /docs` - Interactive API documentation
-- `GET /redoc` - Alternative API documentation
+---
 
-## Environment Configuration
+## 🚀 Quick Start
 
-The service uses environment variables for configuration:
-
-- `DATABASE_URL` - Database connection string (default: sqlite:///./groupement_microservice.db)
-- `GROUP_SIZE` - Default group size (default: 5)
-- `DEBUG` - Enable debug mode (default: False)
-- `LOG_LEVEL` - Logging level (default: INFO)
-
-## Running the Service
-
-### Using Docker Compose (Recommended)
-
+### Using Docker (Recommended)
 ```bash
+# Clone and launch in one command
 docker-compose up -d
 ```
+The service will be live at: `http://localhost:8000`
 
-The service will be available at `http://localhost:8000`
+### Local Development
+1. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+2. **Launch server:**
+   ```bash
+   uvicorn main:app --reload
+   ```
 
-### Running Locally
+---
 
-1. Install dependencies:
-```bash
-pip install -r requirements.txt
+## 🛣️ API Roadmap
+
+### 🔍 Discovery & Health
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/health` | Check service vitality |
+| `GET` | `/ready` | Check if DB/Engine is ready |
+| `GET` | `/docs` | **Interactive Swagger UI** |
+
+### 👥 Group Management
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `POST` | `/groups/generate` | Trigger K-Means grouping |
+| `GET` | `/groups` | List all calculated groups |
+| `GET` | `/groups/{id}` | Details for a specific group |
+| `GET` | `/groups/pickup-points` | Get optimized coordinates |
+
+### ⚙️ Configuration
+| Method | Endpoint | Description |
+| :--- | :--- | :--- |
+| `GET` | `/config` | View current runtime settings |
+| `PUT` | `/config` | Update group size or debug mode |
+
+---
+
+## ⚙️ Environment Configuration
+
+Create a `.env` file to customize your instance:
+
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `DATABASE_URL` | `sqlite:///...` | Connection string |
+| `GROUP_SIZE` | `5` | Targeted students per group |
+| `DEBUG` | `False` | Detailed error logs |
+| `LOG_LEVEL` | `INFO` | Output verbosity |
+
+---
+
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    A[Client/Frontend] --> B(FastAPI Gateway)
+    B --> C{Logic Engine}
+    C --> D[K-Means Clustering]
+    C --> E[SQLAlchemy ORM]
+    E --> F[(SQLite/Postgres)]
+    D --> G[Optimized Pickup Points]
 ```
 
-2. Run the application:
-```bash
-python main.py
-```
+---
 
-## Configuration File (.env)
+## 🛠️ Built With
 
-Create a `.env` file in the project root with the following optional variables:
+*   **FastAPI** - The web framework
+*   **SQLAlchemy** - Database ORM
+*   **Scikit-Learn** - Machine learning logic
+*   **Pydantic** - Data validation
+*   **Uvicorn** - ASGI server
 
-```env
-DATABASE_URL=sqlite:///./groupement_microservice.db
-GROUP_SIZE=5
-DEBUG=False
-LOG_LEVEL=INFO
-PORT=8000
-```
+---
 
-## Build Docker Image
+## 🧪 Testing with Streamlit
+Want a visual interface?
+1. Start the API first.
+2. Run the dashboard:
+   ```bash
+   streamlit run app_streamlit.py
+   ```
 
-```bash
-docker build -t groupement-service .
-```
-
-Run the built image:
-
-```bash
-docker run -p 8000:8000 groupement-service
-```
-
-## API Usage Examples
-
-### Generate Groups
-
-```bash
-curl -X POST http://localhost:8000/groups/generate
-```
-
-### Get All Groups
-
-```bash
-curl http://localhost:8000/groups
-```
-
-### Update Group Size Configuration
-
-```bash
-curl -X PUT "http://localhost:8000/config?size=6"
-```
-
-### Get Optimal Pickup Points
-
-```bash
-curl http://localhost:8000/groups/pickup-points
-```
-
-## Health Checks
-
-### Service Health
-```bash
-curl http://localhost:8000/health
-```
-
-### Service Readiness
-```bash
-curl http://localhost:8000/ready
-```
-
-## Dependencies
-
-- FastAPI
-- SQLAlchemy
-- Pydantic Settings
-- Scikit-learn
-- Uvicorn
-
-## Development
-
-To run in development mode with auto-reload:
-
-```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
-
-## Testing
-
-To run the service and test with the Streamlit frontend:
-
-1. Start the API: `docker-compose up -d`
-2. Run Streamlit: `streamlit run app_streamlit.py`
-
-## Architecture
-
-This is a single-service microservice architecture that:
-
-- Uses SQLite for persistence (can be changed via DATABASE_URL)
-- Implements proper logging
-- Includes health and readiness checks
-- Supports environment-based configuration
-- Is containerized for easy deployment
-- Provides comprehensive API documentation
+---
+📅 **Version:** 1.0.0 | 🔒 **License:** None
